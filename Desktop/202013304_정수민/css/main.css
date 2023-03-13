@@ -1,0 +1,302 @@
+html,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background: white;
+	font-family: 'Do Hyeon', sans-serif; 
+}
+/* 로고 */
+.logo {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+/* 웹페이지 이름 */
+.name {
+	position: absolute;
+	top: 0px;
+	left: 94px;
+}
+/** 집 종류 **/
+.menu_bar {
+    list-style-type: none;
+    width: 200px;
+    padding: 0px;
+    margin: 0px;
+	padding-top:20px;
+}
+/*원룸*/
+.oneroom {
+	position: absolute;
+	display: inline-block;
+	margin: 10px;
+	height: 80px;
+	font-size: 50px;
+	text-align: center;
+	color: #5ea6c1;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	outline: none;
+	left: 500px;
+}
+/* 오피스텔 */
+.apartment {
+	position: absolute;
+	display: inline-block;
+	margin: 10px;
+	height: 80px;
+	font-size: 50px;
+	text-align: center;
+	color: #5ea6c1;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	outline: none;
+	left: 800px;
+}
+/* 아파트 */
+.housing {
+	position: absolute;
+	display: inline-block;
+	margin: 10px;
+	height: 80px;
+	font-size: 50px;
+	text-align: center;
+	color: #5ea6c1;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	outline: none;
+	left: 1100px;
+}
+/* hr 선*/
+.first_x {
+	position: absolute;
+	top: 100px;
+	width: 100%;
+	background-color: orange;
+	border: 0px;
+	height: 1px;
+}
+.second_x {
+	position: absolute;
+	top: 190px;
+	width: 100%;
+	background-color: orange;
+	border: 0px;
+	height: 1px;
+}
+/* 방범 시설 */
+.aside_left {
+	color:#5ea6c1;
+	cursor:pointer;
+	position: absolute;
+	top: 110px;
+	left: 50px;
+}
+/* 외부 시설 */
+.aside_right {
+	color:#5ea6c1;
+	cursor:pointer;
+	position: absolute;
+	top: 110px;
+	left: 230px;
+}
+ul{
+	margin:5px;
+}
+/* hr 태그 속성 */
+.vl {
+	position: absolute;
+	left: 398px;
+	top:109px;
+	border-left: 1px solid orange;
+	height: 620px;
+}
+
+/** 라디오 버튼 가격 바 **/
+@charset "UTF-8";
+#form-wrapper {
+    width: 30%;
+	right:10px;
+	top:110px;
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+}
+form {
+  width: 90%;
+  max-width: 500px;
+}
+form #debt-amount-slider {
+  display: flex;
+  flex-direction: row;
+  align-content: stretch;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+/* 라디오 버튼 잇는 선 */
+form #debt-amount-slider::before {
+  content: " ";
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  width: calc(100% * (4 / 5));
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: orange;
+}
+form #debt-amount-slider input,
+form #debt-amount-slider label {
+  box-sizing: border-box;
+  flex: 1;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
+}
+/* 라디오 버튼 label(가격 텍스트) 부분 */
+form #debt-amount-slider label {
+  color:orange;
+  display: inline-block;
+  position: relative;
+  width: 20%;
+  height: 100%;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+/* 전환되기 전 */
+form #debt-amount-slider label::before {
+  content: attr(data-debt-amount);
+  position: absolute;
+  left: 50%;
+  padding-top: 10px;
+  transform: translate(-50%, 45px);
+  font-size: 14px;
+  letter-spacing: 0.4px;
+  font-weight: 400;
+  white-space: nowrap;
+  opacity: 0.85;
+  transition: all 0.15s ease-in-out;
+}
+/* 전환된 후 */
+form #debt-amount-slider label::after {
+  content: " ";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border: 2px solid orange;
+  background: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  z-index: 1;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+/* 마우스를 라디오 버튼에 올렸을 때 */
+form #debt-amount-slider label:hover::after {
+  transform: translate(-50%, -50%) scale(1.25);
+}
+form #debt-amount-slider input {
+  display: none;
+}
+form #debt-amount-slider input:checked + label::before {
+  font-weight: 800;
+  opacity: 1;
+}
+/* 라디오 버튼 체크 하면 두께가 두꺼워짐 */
+form #debt-amount-slider input:checked + label::after {
+  border-width: 4px;
+  transform: translate(-50%, -50%) scale(0.75);
+}
+/* 마지막 라디오 버튼의 위치 */
+form #debt-amount-slider input:checked ~ #debt-amount-pos {
+  opacity: 1;
+}
+form #debt-amount-slider input:checked:nth-child(1) ~ #debt-amount-pos {
+  left: 10%;
+}
+form #debt-amount-slider input:checked:nth-child(3) ~ #debt-amount-pos {
+  left: 30%;
+}
+form #debt-amount-slider input:checked:nth-child(5) ~ #debt-amount-pos {
+  left: 50%;
+}
+form #debt-amount-slider input:checked:nth-child(7) ~ #debt-amount-pos {
+  left: 70%;
+}
+form #debt-amount-slider input:checked:nth-child(9) ~ #debt-amount-pos {
+  left: 90%;
+}
+/* 라디오 버튼 클릭 */
+form #debt-amount-slider #debt-amount-pos {
+  display: block;
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background:orange;
+  border-radius: 50%;
+  transition: all 0.15s ease-in-out;
+  transform: translate(-50%, -50%);
+  border: 2px solid #fff;
+  opacity: 0;
+  z-index: 2;
+}
+form:valid #debt-amount-slider input + label::before {
+  transform: translate(-50%, 45px) scale(0.9);
+  transition: all 0.15s linear;
+}
+form:valid #debt-amount-slider input:checked + label::before {
+  transform: translate(-50%, 45px) scale(1.1);
+  transition: all 0.15s linear;
+}
+/* 지도 부분 */
+#map{
+	top:180px;
+	left:400px;
+	 width:77%;
+	height:530px;
+}
+/* 방사형 차트 부분 */
+.chart{
+	left:20px;
+	position:absolute;
+	top: 209px;
+	height: 350px;
+	width:350px;
+}
+/* 마커에 대한 세부적인 사항들이 텍스트로 표시되는 부분 */
+#details{
+	position:absolute;
+	top:530px;
+	height:130px;
+	width:400px;
+	padding-left:50px;
+	color:#5ea6c1;
+}

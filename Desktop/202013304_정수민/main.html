@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>안전하집</title>
+		<link rel="stylesheet" href="./css/main.css" />
+	</head>
+	<body>
+		<script src="./js/main.js"></script>
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+			crossorigin="anonymous"
+		></script>
+		<!-- 카카오 지도 불러오기 -->
+		<script
+			type="text/javascript"
+			src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=5c8c304f45e07e541acac85ab4f14366&libraries=clusterer,services"
+		></script>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
+		</style>
+		<!-- 상단 헤더 -->
+		<header class="header">
+			<input
+				type="image"
+				class="logo"
+				src="images/logo2.png"
+				alt="Submit"
+				width="111"
+				height="98"
+			/>
+			<input
+				type="image"
+				class="name"
+				src="images/image.png"
+				alt="Submit"
+				width=""
+				height="123"
+			/>
+				<ul class="menu_bar">
+				<li class="oneroom" onclick="menubar(true,false,false)" id="oneroom">
+					<a>원룸</a>
+				</li>
+				<li class="apartment" onclick="menubar(false,true,false)" id="apt">
+					<a>오피스텔</a>
+				</li>
+				<li class="housing" onclick="menubar(false,false,true)" id="housing">
+					<a>아파트</a>
+				</li>
+			</ul>
+		</header>
+
+	
+
+		<hr class="first_x" />
+		<!-- 가격 조절 -->
+			<div id="form-wrapper">
+				<form action="/p/quote.php" method="GET">
+					<div id="debt-amount-slider">
+						<input
+							type="radio"
+							name="debt-amount"
+							id="1"
+							value="1"
+							class="first"
+							required
+						/>
+						<label for="1" data-debt-amount="~30만원"></label>
+						<input
+							type="radio"
+							name="debt-amount"
+							id="2"
+							value="2"
+							class="second"
+							required
+						/>
+						<label for="2" data-debt-amount="30~40"></label>
+						<input
+							type="radio"
+							name="debt-amount"
+							id="3"
+							value="3"
+							class="third"
+							required
+						/>
+						<label for="3" data-debt-amount="40~50"></label>
+						<input
+							type="radio"
+							name="debt-amount"
+							id="4"
+							value="4"
+							class="fourth"
+							required
+						/>
+						<label for="4" data-debt-amount="50~60"></label>
+						<input
+							type="radio"
+							name="debt-amount"
+							id="5"
+							value="5"
+							class="fifth"
+							required
+						/>
+						<label for="5" data-debt-amount="60만원~"></label>
+						<div id="debt-amount-pos"></div>
+					</div>
+				</form>
+			</div>
+
+
+		<hr class="second_x" />
+
+		<!-- 방범시설 -->
+		<div class="aside_left">
+			<details>
+				<summary>방범 시설</summary>
+				<ul>
+					<li class="cctv" id="cctv" onclick="colorchange('cctv')">cctv</li>
+					<li class="police" id="police" onclick="colorchange('police')">경찰서</li>
+					<li class="safemap" id="safemap" onclick="colorchange('safemap')">안심센터</li>
+				</ul>
+			</details>
+			<div class="safe_list"></div>
+		</div>
+
+		<div class="vl"></div>
+
+		<!-- 외부시설 -->
+		<div class="aside_right">
+			<details>
+				<summary>외부 시설</summary>
+				<ul>
+					<li class="eat" id="eat" onclick="colorchange('eat')">음식점</li>
+				</ul>
+			</details>
+		</div>
+
+		<!-- 지도 부분 -->
+		<div>
+			<div id="map"></div>
+			<!--  chart -->
+			<div id="chart" class="chart"><canvas id="myChart"></canvas></div>
+			<!--세부 내용 들어갈 곳-->
+			<div id="details" class="details"></div>
+		</div>
+
+		<script src="https://cdn.rawgit.com/abdmob/x2js/master/xml2json.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+		<script type="text/javascript" src="./func.js"></script>
+		<script type="text/javascript" src="./price.js"></script>
+		<script type="text/javascript" src="./housing_bar.js"></script>
+		<script type="text/javascript" src="./oneroom_bar.js"></script>
+		<script type="text/javascript" src="./apartment_bar.js"></script>
+		<script type="text/javascript" src="./apiChart.js"></script>
+	</body>
+</html>

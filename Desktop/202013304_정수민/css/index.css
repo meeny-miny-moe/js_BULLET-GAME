@@ -1,0 +1,203 @@
+@import 'https://fonts.googleapis.com/css?family=Catamaran';
+html,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: 'Do Hyeon', sans-serif;
+}
+/* 웹페이지 이름 */
+.name {
+	position: absolute;
+	top: 0px;
+	left: 94px;
+}
+/* 로고 */
+.logo {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+/* 선 */
+hr {
+	position: absolute;
+	top: 100px;
+	width: 100%;
+	background-color: white;
+	border: 0px;
+	height: 2px;
+}
+/* 가격바 */
+body {
+	--height: 50;
+	--width: 300;
+	--border: 5;
+	--speed: 0.4;
+	--ease: cubic-bezier(0.85, 0.01, 0.4, 0.97);
+	--color-bk: #d2e1fc;
+	background: var(--color-bk);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition-property: background;
+	transition-duration: calc(var(--speed) * 1s);
+	transition-timing-function: var(--ease);
+}
+/* 돋보기를 클릭했을 때 배경 색상 변화 */
+body:focus-within {
+	--speed: 0.7;
+	background-color: white;
+}
+
+::-moz-placeholder {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+:-ms-input-placeholder {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+::placeholder {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+:-ms-input-placeholder {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+::-ms-input-placeholder {
+	color: rgba(255, 255, 255, 0.5);
+}
+/* 검색창 전체 속성*/
+.input-container {
+	width: calc(var(--width) * 1px);
+	height: calc(var(--height) * 1px);
+	position: relative;
+	cursor: pointer;
+	transform: rotate(12deg) scale(0.7);
+	transition-property: opacity, transform;
+	transition-duration: calc(var(--speed) * 1s);
+	transition-timing-function: var(--ease);
+}
+/* 텍스트가 입력되는 부분의 속성 */
+.input-container .center {
+	border: calc(var(--border) * 1px) solid white;
+	border-left: none;
+	border-right: none;
+	width: 100%;
+	height: calc(100% - var(--border) * 2px);
+	transform: scalex(0);
+	transition: inherit;
+	background-color: var(--color-bk);
+}
+.input-container input {
+	transition: inherit;
+	width: calc(100% - var(--height));
+	height: 100%;
+	border: 0;
+	outline: 0;
+	color: white;
+	background: transparent;
+	font-size: 1.3rem;
+	opacity: 0;
+	padding: 0;
+	margin: 0;
+}
+/* 검색창 가장가리의 그림자 */
+.input-container .shadow {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 2em;
+	top: 0;
+	left: 0;
+	box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.1);
+	transition: inherit;
+	transform: scalex(0) translateY(-10px);
+	opacity: 0;
+}
+/* 돋보기 클릭하였을 때 전과 후 */
+.input-container:after,
+.input-container:before {
+	z-index: 1;
+	content: '';
+	transition: inherit;
+	width: calc((var(--height) * 0.5px) - (var(--border) * 1px));
+	height: calc((var(--height) * 1px) - (var(--border) * 2px));
+	display: block;
+	top: 0;
+	border-color: white;
+	position: absolute;
+	background-color: var(--color-bk);
+	border: calc(var(--border) * 1px) solid white;
+}
+/* 돋보기 클릭하였을 때 전 */
+.input-container:before {
+	right: 100%;
+	border-radius: 2em 0 0 2em;
+	border-right: none;
+	transform: translateX(calc(var(--width) * 0.5px));
+}
+/* 돋보기 클릭하였을 때 후 */
+.input-container:after {
+	left: 100%;
+	border-radius: 0 2em 2em 0;
+	border-left: none;
+	transform: translateX(calc(var(--width) * -0.5px));
+}
+/* 돋보기 부분 */
+.input-container .sticks {
+	position: absolute;
+	height: calc(var(--height) * 0.5px);
+	width: 1px;
+	bottom: 0;
+	right: 0;
+	transition: inherit;
+	transition-duration: calc(var(--speed) * 1.25s);
+	transform: translateX(calc((var(--width) - var(--height)) * -0.53px)) rotate(-45deg);
+	z-index: 2;
+}
+/* 전환이 일어나기 전과 후 돋보기의 속성 */
+.input-container .sticks:before,
+.input-container .sticks:after {
+	transition: transform calc(var(--speed) * 1s) var(--ease);
+	height: calc(var(--height) * 0.5px);
+	width: calc(var(--border) * 1px);
+	position: absolute;
+	content: '';
+	background-color: white;
+	left: calc(var(--border) * -0.5px);
+	bottom: calc(var(--height) * -0.25px);
+}
+/* 마우스를 돋보기에 클릭하였을 때 생기는 전환 */
+.input-container:focus-within {
+	transform: rotate(0deg) translatey(-10px);
+}
+.input-container:focus-within .center {
+	transform: scalex(1);
+}
+.input-container:focus-within .shadow {
+	transform: scalex(1) translateY(0px);
+	opacity: 1;
+}
+.input-container:focus-within input {
+	opacity: 1;
+}
+/* 배경을 다시 클릭하게 될 때 생기는 변환 */
+.input-container:focus-within:before {
+	transform: translateX(0);
+}
+.input-container:focus-within:after {
+	transform: translateX(0);
+}
+.input-container:focus-within .sticks {
+	transition-duration: calc(var(--speed) * 1s);
+	transform: translateX(calc(var(--height) * -0.1px)) translateY(0) rotate(180deg);
+}
+.input-container:focus-within .sticks:before {
+	transform: rotate(-45deg);
+}
+.input-container:focus-within .sticks:after {
+	transform: rotate(45deg);
+}
