@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Star Trek</title>
+		<style>
+			canvas {
+				background-image: url('images/background.png');
+				position: absolute;
+				left: 250px;
+				border: #909090 1px solid;
+				display: block;
+				margin: 0 auto;
+				width: 70%;
+				height: 600px;
+			}
+			body {
+				background-color: black;
+			}
+			h3 {
+				margin: 0px;
+				margin-bottom: 10px;
+				font-size: 2.7em;
+				text-align: center;
+			}
+
+			#start_button {
+				position: absolute;
+				width: 30%;
+				left: 550px;
+				top: 350px;
+				background-color: #f4511e;
+				border: none;
+				color: white;
+				padding: 16px 32px;
+				text-align: center;
+				font-size: 16px;
+				margin: 4px 2px;
+				opacity: 0.6; /* 흐리게 만듦*/
+				transition: opacity 0.1s; /* 마우스가 올라가면 흐린속성에 대한 전환이 일어나도록함 */
+				display: inline-block;
+				text-decoration: none;
+				cursor: pointer;
+			}
+
+			#start_button:hover {
+				opacity: 1; /* 마우스가 올라가면 선명하게 바뀜 */
+			}
+			/*LIVE와 SCORE 텍스트에 대한 CSS속성*/
+			#exc { 
+				left: 70%;
+				position: absolute;
+				display: inline;
+				color: yellow;
+				font-size: 140%;
+				font-weight: bold;
+			}
+			/* 생명력과 점수에 대한 CSS속성 */ 
+			#LIFE,
+			#score {
+				margin-right: 50px; /* inline이기에 life와 score은 한줄로 출력되기에 오른쪽 margin을 넣어 거리를 띄움 */
+			}
+	    	#game-over { /* GAME OVER텍스트에 대한 CSS속성*/
+				position: absolute;
+				left: 740px;
+				top: 350px;
+				color: orange;
+				font-size: 30px;
+				display: none; /* 처음에는 안보이도록 하였음 -> 생명력 0이 되면 보이게 만듦 */
+				font-weight:bold;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<h3 style="color: red;">Star Trek v0.1</h3>
+		<hr />
+		<div>
+			<canvas id="gameCanvas" width="750" height="480"></canvas>
+			<button id="start_button" , onclick="surprise()">START</button> <!-- start button을 누르면 surprise()라는 함수 실행-->
+		</div>
+		<div id="exc">LIVE: <span id="LIFE">3</span> SCORE: <span id="score">0</span></div> <!-- 처음 생명력은 3으로, 점수는 0으로 보이도록함-->
+		<div id="game-over"> 
+			GAME OVER
+		</div>
+		
+		<script>
+			var canvas = document.getElementById('gameCanvas');
+			var ctx = canvas.getContext('2d');
+
+			let life = 3; // 생명력 3개로 주어짐
+			let score = 0; // 점수는 0에서부터 점점 커짐
+
+			// start button을 눌러 Surprise()가 실행되는데 아래는 surprise()에 대한 코드임
+			function surprise() {
+				const myInterval = setInterval(animate, 30); // life가 0이 되면 게임이 멈추게 하기 위해 변수에 넣으
+				const button = document.getElementById('start_button');
+				button.remove(); // 게임화면이 읽어와지면 버튼은 없앰
+
+				//비행기에 대한 정보
+				var shipImg = new Image();
+				shipImg.src = 'images/ship.png';
+				var shipSize = 40;
+				var speed = 10;
+
+				var missileImg = new Image();
+				missileImg.src = 'images/laser.png';
+
+				var ship = {
+					// 비행기 객체
+					x: (canvas.width - shipSize) / 2,
+					y: canvas.height - shipSize,
+					w: shipSize,
+					h: shipSize,
+					missiles: [], // 미사일을 저장할 배열 변수
+
+					/* 미사일에 대한 내부 함수 */
+					render: function () {
+						for (var i = 0; i < this.missiles.length; i++) {
+							var m = this.missiles[i];
+							ctx.drawImage(missileImg, m.x - 40, (m.y -= 40), m.w, m.h);
+
+							checkCollision(m, i); // 미사일과 적기 충동 감지 함수
+
+							if (m.y <= 0) {
+								// 화면 밖으로 나간 미사일은 배열에서 삭제한다.
+								this.missiles.splice(i, 1);
+							}
+						}
+					},
+				};
+
+				// 사용자의 키보드 입력을 받아 비행기 좌우 움직인 구현
+				var rightPressed = false; // 오른쪽 키보드 변수
+				var leftPressed = false; // 왼쪽 키보드 변수
+				var upPressed = false; // 위 키보드 변수
+				var downPressed = false; // 아래 키보드 변수
+				var spacePressed = false; // spacebar 변수
+
+				document.addEventListener('keydown', keyDownHandler, false);
+				document.addEventListener('keyup', keyUpHandler, false);
+
+				// 오른쪽, 왼쪽, 아래, 위, 스페이스바 키보드 누르면 true로 바뀜
+				function keyDownHandler(e) {
+					if (e.code == 'ArrowRight') {
+						rightPressed = true;
+					}
+					if (e.code == 'ArrowLeft') {
+						leftPressed = true;
+					}
+					if (e.code == 'ArrowUp') {
+						upPressed = true;
+					}
+					if (e.code == 'ArrowDown') {
+						downPressed = true;
+					}
+					if (e.code == 'Space') {
+						spacePressed = true;
+					}
+				}
+				// 오른쪽, 왼쪽, 아래, 위, 스페이스바 키보드 누르면 false로 바뀜
+				function keyUpHandler(e) {
+					if (e.code == 'ArrowRight') {
+						rightPressed = false;
+					}
+					if (e.code == 'ArrowLeft') {
+						leftPressed = false;
+					}
+					if (e.code == 'ArrowUp') {
+						upPressed = false;
+					}
+					if (e.code == 'ArrowDown') {
+						downPressed = false;
+					}
+					if (e.code == 'Space') {
+						spacePressed = false;
+					}
+				}
+
+				//적기 구현
+				var enemySize = 40;
+				var enemyImg = new Image();
+				enemyImg.src = 'images/enemy.png';
+
+				var enemyCount = 10; // 적기의 개수 레벨마다 다름
+				var enemyStatus = [];
+				for (var i = 0; i < enemyCount; i++) {
+					enemyStatus[i] = {
+						x: 0,
+						y: 0,
+						w: enemySize,
+						h: enemySize,
+						img: enemyImg,
+						status: 0,
+					};
+				}
+
+				function checkCrash() {
+					for (var i = 0; i < enemyCount; i++) {
+						var enemy = enemyStatus[i];
+
+						if (enemy.status == 0) {
+							continue;
+						}
+
+						ship.rx = ship.x + ship.w;
+						ship.by = ship.y + ship.h;
+						enemy.rx = enemy.x + enemy.w;
+						enemy.by = enemy.y + enemy.h;
+
+						if (
+							(ship.x >= enemy.x && ship.x <= enemy.rx) ||
+							(ship.rx >= enemy.x && ship.rx <= enemy.rx)
+						) {
+							if (
+								(ship.y >= enemy.y && ship.y <= enemy.by) ||
+								(ship.by >= enemy.y && ship.by <= enemy.by)
+							) {
+								enemy.status = 0; // 부딪히면 적기 더 이상 안보이게하기
+								--life; // 적기와 미사일 부딪히면 생명력 1감소
+								return 1;
+							}
+						}
+					}
+					return 0;
+				}
+
+				/* 적기가 바닥과 부딪혔는지 검사하는 함수*/
+				function checkDown() {
+					for (var i = 0; i < enemyCount; i++) {
+						var enemy = enemyStatus[i];
+
+						if (enemy.status == 0) { // 적기가 보이지 않는다면 무시
+							continue;
+						}
+
+						enemy.by = enemy.y + enemy.h; // 적기의 머리부분 y좌표
+
+						if (enemy.by >= canvas.height) { // 적기의 머리부분이 canvas의 바닥에 닿으면 1을 리턴
+							return 1;
+						}
+					}
+					return 0;
+				}
+
+				function countlive() {
+					if (checkDown()) {
+						--life; // checkDown()이 1을 반환하면(바닥과 부딪히면) 생명력을 1 감소시킴
+					}
+				}
+
+				function createNewEnemy(probWeight, gameLevel) {
+					if (Math.floor(Math.random() * probWeight) < gameLevel) {
+						for (var i = 0; i < enemyCount; i++) {
+							var enemy = enemyStatus[i];
+
+							if (enemy.status == 0) {
+								enemy.y = 0;
+								enemy.x = Math.floor(Math.random() * canvas.width);
+
+								if (enemy.x + enemySize > canvas.width) {
+									enemy.x = canvas.width - enemySize;
+								}
+								enemy.status = 1;
+								break;
+							}
+						}
+					}
+				}
+				var enemySpeed = 10; // 단계마다 다르게 하는 적기의 내려오는 속도
+				function drawAllEnemies() {
+					for (var i = 0; i < enemyCount; i++) {
+						var enemy = enemyStatus[i];
+
+						if (enemy.status == 0) {
+							continue;
+						}
+						enemy.y += enemySpeed;
+
+						if (enemy.y + enemySize <= canvas.height) {
+							ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.w, enemy.h);
+						} else {
+							enemy.status = 0;
+						}
+					}
+					createNewEnemy(30, 3);
+				}
+
+				// 미사일과 적기 충돌
+				var missiles = [];
+
+				//폭발하는 사진
+				var bombImg = new Image();
+				bombImg.src = 'images/bomb.png';
+
+				function checkCollision(m, mi) {
+					for (var i = 0; i < enemyCount; i++) {
+						var enemy = enemyStatus[i];
+
+						if (enemy.status == 0) { // 미사일이 보이지 않는다면 충돌을 검사하지 않음 
+							continue;
+						}
+
+						enemy.rx = enemy.x + enemy.w; // 적기의 x좌표에 폭을 더한 값
+						enemy.by = enemy.y + enemy.h; // 적기의 y좌표에 높이를 더하여 적기의 머리부분 y좌표를 저장
+						m.rx=m.x+80; // 미사일의 오른쪽 x좌표
+						
+						if (
+							(m.x >= enemy.x &&m.x <= enemy.rx || m.rx>=enemy.x && m.rx<=enemy.rx)&&
+							m.y >= enemy.y &&
+							m.y <= enemy.by
+						) {
+							missiles.splice(missiles[mi], 1);
+							score += 5;
+							enemy.status = 0;
+						}
+					}
+				}
+
+				function Game_Over() { // 생명력이 0이 되면 GAME OVER텍스트가 보이도록함
+					if (life <= 0) {
+						document.getElementById('game-over').style.display = 'block';
+						return 1;
+					}
+
+					return 0;
+				}
+
+				function myStop() { // Game_Over이 1을 반환하면 화면을 멈추게함
+					if (Game_Over()) {
+						clearInterval(myInterval);
+					}
+				}
+
+				function animate() {
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					drawAllEnemies();
+					ctx.drawImage(shipImg, ship.x, ship.y);
+					ship.render(); // ship의 내부함수 render 실행(미사일 함수)
+
+					// 비행기가 speed만큼 움직임
+					if (rightPressed && ship.x < canvas.width - shipSize) {
+						ship.x += speed;
+					}
+					if (leftPressed && ship.x > 0) {
+						ship.x -= speed;
+					}
+					if (upPressed && ship.y > 0) {
+						ship.y -= speed;
+					}
+					if (downPressed && ship.y < canvas.height - shipSize) {
+						ship.y += speed;
+					}
+					if (spacePressed) { // 스페이스바 누르면 missile배열에서 아래의 위치에 push됨
+						ship.missiles.push({
+							x: ship.x + ship.w * 0.5,
+							y: ship.y,
+							w: 80,
+							h: 40,
+						});
+					}
+					if (checkCrash()) {
+						ctx.font = '20pt Calibri';
+						ctx.fillStyle = 'red';
+						ctx.fillText('Crash!!', 10, 20);
+
+						ctx.drawImage(bombImg, ship.x-20, ship.y - 40, 80, 80); // 폭발하는 이미지 출력
+					}
+					document.getElementById('score').innerHTML = parseInt(score);
+					countlive(); // 생명력 카운트 함수를 부름
+					document.getElementById('LIFE').innerHTML = parseInt(life); // life를 위 html에 넣어줌
+					Game_Over(); // 생명력이 0이 되었다면 화면을 멈추도록 하기 위해 Gama_Over()함수를 이용해서 검사
+					myStop(); // restart 만들어주기
+				}
+			}
+		</script>
+	</body>
+</html>

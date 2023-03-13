@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Star Trek</title>
+		<meta charset="utf-8" />
+		<style>
+			/* body의 배경을 지정 */
+			body { 
+				background-image: url('images/background.png');
+				margin: 0;
+				padding: 0;
+				height: 100%;
+			}
+			
+			 /* HTML5 시맨틱 구조화하여 header, section, fotter, summary가 존재 */
+		
+			/* header부분 지정*/
+			.header {
+				width: 100%;
+				height: 100px;
+				margin-bottom: 50px;
+				color: white;
+				text-align: center;
+				font: italic bold 40px consolas, sans-serif;
+			}
+			
+			/* section 부분 지정*/
+			.section {
+				padding-top: 50px;
+				text-align: center;
+				height:400px;
+			}
+			/* 레벨 1, 2, 3 이미지의 디자인 속성 지정 */
+			img {
+				width: 300px;
+				height: 300px;
+				transition: width 2s;
+				margin-left: 50px;
+			}
+			/* 마우스를 이미지 위에 올려놓으면 줄어들게 만들기 */
+			img:hover {
+				width: 10%;
+				height: 10%;
+			}
+			/* footer 부분 지정*/
+			.footer {
+				color: white;
+				width: 100%;
+				height: 140px;
+			}
+	
+			/* summary 요소 부분에 마우스를 올렸을 때 반응하기*/
+			summary:hover {
+				font-size: 120%; 
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- header 부분에는 게임의 제목인 Star Trek가 들어감 -->
+		<header class="header"><h1>Star Trek</h1></header>
+		
+		<!-- section 부분에는 1, 2, 3 레벨 이미지가 들어감 -->
+		<section class="section">
+			<h2>
+				<a href="1.html"><img src="images/level1.png" alt="level1 이미지 버튼" /></a>
+
+				<a href="2.html"
+					><img src="images/level2.png" alt="level1 이미지 버튼" width="20%" height="20%"
+				/></a>
+				<a href="3.html"
+					><img src="images/level3.png" alt="level1 이미지 버튼" width="20%" height="20%"
+				/></a>
+			</h2>
+		</section>
+
+		<!-- footer 의 부분에는 게임에 대한 설명이 들어감 -->
+		<footer class="footer">
+			<!-- 사용자가 직접 접거나 펼 수 있는 대화형 위젯을 이용하여 게임에 대한 설명이 들어감-->
+			<details>
+				<summary>! 적군을 피하는 게임 !</summary>
+					방향키를 이용하여 움직여보세요 ! 그리고 적군을 스페이스바 키를 이용하여 무찔러
+					보아요 ! 만약 적기와 부딪힌다면 생명이 하나 줄어든다는점 유의해주세요~
+			</details>
+			<details>
+				<summary>1,2,3 단계 차이점</summary>
+
+					적군의 수가 점점 증가합니다
+				</details>
+			<details>
+				<summary>만든이</summary>
+				정수민
+			</details>
+		</footer>
+	</body>
+</html>
